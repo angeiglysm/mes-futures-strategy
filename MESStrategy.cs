@@ -10,7 +10,7 @@ using NinjaTrader.NinjaScript.Indicators;
 
 namespace NinjaTrader.NinjaScript.Strategies
 {
-    public class MESMar25ScalpingBot2_2025 : Strategy
+    public class MESMar25Scalping_2025 : Strategy
     {
         private Bollinger bollinger;
         private ATR atr;
@@ -25,7 +25,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             if (State == State.SetDefaults)
             {
                 Description = "Estrategia de scalping optimizada para MES MAR25 basada en Bandas de Bollinger.";
-                Name = "MESMar25ScalpingBot2_2025";
+                Name = "MESMar25Scalping_2025";
                 Calculate = Calculate.OnEachTick;
                 EntriesPerDirection = 1;
                 EntryHandling = EntryHandling.AllEntries;
@@ -67,25 +67,25 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             if (Close[0] <= bollinger.Lower[0] && Close[0] > ema[0])
             {
-                EnterLong(lotSize, "CompraBollinger");
-                SetProfitTarget("CompraBollinger", CalculationMode.Ticks, dynamicTakeProfitTicks);
-                SetStopLoss("CompraBollinger", CalculationMode.Ticks, dynamicStopLossTicks, false);
+                EnterLong(lotSize, "BuyBollinger");
+                SetProfitTarget("BuyBollinger", CalculationMode.Ticks, dynamicTakeProfitTicks);
+                SetStopLoss("BuyBollinger", CalculationMode.Ticks, dynamicStopLossTicks, false);
             }
 
             if (Close[0] >= bollinger.Upper[0] && Close[0] < ema[0])
             {
-                EnterShort(lotSize, "VentaBollinger");
-                SetProfitTarget("VentaBollinger", CalculationMode.Ticks, dynamicTakeProfitTicks);
-                SetStopLoss("VentaBollinger", CalculationMode.Ticks, dynamicStopLossTicks, false);
+                EnterShort(lotSize, "SellBollinger");
+                SetProfitTarget("SellBollinger", CalculationMode.Ticks, dynamicTakeProfitTicks);
+                SetStopLoss("SellBollinger", CalculationMode.Ticks, dynamicStopLossTicks, false);
             }
         }
 
         private void ExitAllPositions()
         {
             if (Position.MarketPosition == MarketPosition.Long)
-                ExitLong("CompraBollinger");
+                ExitLong("BuyBollinger");
             if (Position.MarketPosition == MarketPosition.Short)
-                ExitShort("VentaBollinger");
+                ExitShort("SellBollinger");
         }
 
         private bool IsHighImpactNewsTime()
